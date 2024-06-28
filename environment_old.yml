@@ -1,0 +1,21 @@
+name: resync_xdf
+channels:
+  - conda-forge
+  - defaults
+dependencies:
+  - mne-bids
+  - python
+  - pandas
+  - numpy
+  - scipy
+  - matplotlib
+  - openpyxl
+  - jupyter
+  - pip
+  - pip:
+    - pymatreader
+    - mne
+    - mnelab
+    - pyedflib
+    - pybv
+    - -e .
