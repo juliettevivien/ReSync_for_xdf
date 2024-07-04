@@ -87,6 +87,8 @@ def main_xdf_batch(
             continue
         else:
             session_ID = row['session ID']
+            print(f'Synchronizing ' + session_ID + '...')
+            DBS_status = row['DBS ON/OFF']
             fname_lfp = row['extracted mat files']
             fname_external = row['LSL filename']
             sync_side = row['sync side']
@@ -98,6 +100,14 @@ def main_xdf_batch(
         if session_ID[0] == "C":
             print(f"Skipping control session " + session_ID + " ...")
             continue
+
+        # make sure every variable has the proper data type:
+        session_ID = str(session_ID)
+        DBS_status = str(DBS_status)
+        fname_lfp = str(fname_lfp)
+        fname_external = str(fname_external)
+        sync_side = str(sync_side)
+        BIP_ch_name = str(BIP_ch_name)
         if sync_side == "left":
             ch_idx_lfp = 0
         elif sync_side == "right":
@@ -117,12 +127,12 @@ def main_xdf_batch(
         """
 
         # Set sourcepath and saving path:
-        subject_path = join(onedrivepath, session_ID[:5])
+        subject_path = join(onedrivepath, session_ID[:6])
         raw_data_path = join(subject_path, "raw_data")
         pre_lfp_source_path = join(raw_data_path, "JSON")
-        lfp_source_path = join(pre_lfp_source_path, session_ID[7:12])
+        lfp_source_path = join(pre_lfp_source_path, DBS_status)
         pre_external_source_path = join(raw_data_path, "XDF")
-        external_source_path = join(pre_external_source_path, session_ID[7:12])
+        external_source_path = join(pre_external_source_path, DBS_status)
 
         results_path = join(subject_path, "synced_data")
         if not os.path.isdir(results_path):
@@ -316,7 +326,8 @@ def main_xdf_batch(
 
         """
         #  OPTIONAL : check timeshift:
-        if CHECK_FOR_TIMESHIFT:
+        timeshift = _get_input_y_n("Do you want to check for timeshift ? ")
+        if timeshift in ("y", "Y"):
             print("Starting timeshift analysis...")
             external_synchronized = TMSi_rec_offset.get_data()
             LFP_synchronized = lfp_rec_offset.get_data()
