@@ -17,8 +17,6 @@ from functions.io import (
     write_set
 )
 from functions.plotting import (
-    plot_LFP_external, 
-    ecg, 
     xdf_plot_lfp_external
 )
 from functions.utils import (
@@ -37,8 +35,7 @@ from functions.timeshift import check_timeshift
 
 
 def main_xdf_batch(
-    excel_fname = "WP3_rec_info.xlsx",
-    CHECK_FOR_TIMESHIFT=True
+    excel_fname = "WP3_rec_info.xlsx"
 ):
 
     """
@@ -49,14 +46,13 @@ def main_xdf_batch(
     ----------
     excel_fname: str, name of the excel file containing the information about the recordings
 
-    CHECK_FOR_TIMESHIFT: boolean, if True, perform timeshift analysis
-
     .................................................................................
 
     Results
     -------
     The results will be saved in the results folder, in a sub-folder named after the 
-    session_ID parameter.
+    session_ID parameter. A .json file containing informations about how the synchronization
+    was performed is also saved for each session.
     8 figures are automatically generated and saved:
     - Fig 1: External bipolar channel raw plot (of the channel containing artifacts)
     - Fig 2: External bipolar channel with artifact detected
@@ -75,6 +71,8 @@ def main_xdf_batch(
 
     """
 
+
+    ################# METHOD TO EXTRACT DATA FROM TEAMS DIRECTLY ###############
     onedrivepath = _get_onedrive_path()
     excel_file_path = join(onedrivepath, excel_fname)
     df = pd.read_excel(excel_file_path, sheet_name="Recording Information")
@@ -114,6 +112,8 @@ def main_xdf_batch(
             ch_idx_lfp = 1
 
         """
+        # This method was to use the datafolders present in the repository: upgraded
+        # to extract data from teams directly (faster)
         working_path = os.getcwd()
 
         #  Set saving path
@@ -140,6 +140,8 @@ def main_xdf_batch(
         saving_path = join(results_path, session_ID)
         if not os.path.isdir(saving_path):
             os.makedirs(saving_path)
+    ############################################################################    
+
 
         #  1. LOADING DATASETS AND EXTRACT CHANNEL CONTAINING ARTIFACTS:
             ##  Intracranial LFP
@@ -219,7 +221,7 @@ def main_xdf_batch(
             # thres_window (aka: baseline window) before the threshold passing
         # kernel 1 only searches for the steep decrease
         # kernel 2 is more custom and takes into account the steep decrease and slow recover
-        # manual kernel is for none of the three previous methods work. Then the artifact
+        # manual method can be used when none of the three previous methods work. Then the artifact
             # has to be manually selected by the user, in a pop up window that will automatically open.
         for method in methods:
             print("Running resync with method = {}...".format(method))
@@ -270,13 +272,11 @@ def main_xdf_batch(
         tmax_lfp = max(lfp_rec.times)
         new_start_intracranial = art_start_LFP - 1
         lfp_rec_offset = lfp_rec.copy().crop(tmin=new_start_intracranial, tmax=tmax_lfp)
-        #lfp_rec_offset.plot(title="lfp_rec_offset")
 
         ## offset external recording (crop everything that is more than 1s before the artifact)
         tmax_external = max(TMSi_rec.times)
         new_start_external = art_start_BIP - 1
         TMSi_rec_offset = TMSi_rec.copy().crop(tmin=new_start_external, tmax=tmax_external)
-        #TMSi_rec_offset.plot(title='TMSi_rec_offset')
 
         ## transfer of the events from the external to the intracranial recording
         # create a duplicate of the events to manipulate it without changing the external one
@@ -312,19 +312,7 @@ def main_xdf_batch(
         # 5. PLOT SYNCHRONIZED RECORDINGS:
         xdf_plot_lfp_external(TMSi_rec_offset, lfp_rec_offset, ch_index_external, ch_idx_lfp, sf_LFP, sf_external, saving_path, session_ID)
 
-        """
-        plot_LFP_external(
-            session_ID=session_ID,
-            LFP_synchronized=LFP_synchronized,
-            external_synchronized=external_synchronized,
-            sf_LFP=sf_LFP,
-            sf_external=sf_external,
-            ch_idx_lfp=ch_idx_lfp,
-            ch_index_external=ch_index_external,
-            saving_path=saving_path,
-        )
 
-        """
         #  OPTIONAL : check timeshift:
         timeshift = _get_input_y_n("Do you want to check for timeshift ? ")
         if timeshift in ("y", "Y"):
