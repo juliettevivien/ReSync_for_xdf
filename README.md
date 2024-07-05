@@ -39,6 +39,7 @@ This repo is structured as follows:
     - sync side
     - IPG BIP
     - Synced
+
 Adapt the paths corresponding to your own data structure, or copy or data structure based on the path described.
 
 
