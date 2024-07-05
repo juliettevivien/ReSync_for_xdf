@@ -40,7 +40,7 @@ This repo is structured as follows:
     - IPG BIP
     - Synced
 
-Adapt the paths corresponding to your own data structure, or copy or data structure based on the path described.
+Adapt the paths corresponding to your own data structure, or copy our data structure based on the path described.
 
 
 Expected datasets are .mat for intracerebral recordings and .xdf for external recordings. 
