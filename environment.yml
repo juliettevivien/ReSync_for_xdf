@@ -1,4 +1,4 @@
-name: resync_xdf_new
+name: resync_xdf
 channels:
   - conda-forge
   - defaults
