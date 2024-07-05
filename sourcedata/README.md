@@ -1,0 +1,1 @@
+Folder to store the source datasets to be synchronized. Do not make any subfolder in this folder.
