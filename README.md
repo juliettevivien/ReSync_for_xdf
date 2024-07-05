@@ -40,7 +40,8 @@ This repo is structured as follows:
     - IPG BIP
     - Synced
 
-Adapt the paths corresponding to your own data structure, or copy our data structure based on the path described.
+Adapt the paths corresponding to your own data structure, or copy our data structure based on the path described. 
+To link a Teams repository to your onedrive account: Go on the folder named 'DATA' (or the one where you store all your datas) and in '...' click on 'Verknüpfung zu OneDrive hinzufügen' ('Add a shortcut to OneDrive').
 
 
 Expected datasets are .mat for intracerebral recordings and .xdf for external recordings. 
