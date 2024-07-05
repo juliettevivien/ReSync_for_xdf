@@ -1,0 +1,1 @@
+Folder where the results are stores in sub-folders corresponding to each session synchronized.
