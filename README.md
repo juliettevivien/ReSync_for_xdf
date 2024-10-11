@@ -39,7 +39,9 @@ This repo is structured as follows:
     - sync side
     - IPG BIP
     - Synced
-Adapt the paths corresponding to your own data structure, or copy or data structure based on the path described.
+
+Adapt the paths corresponding to your own data structure, or copy our data structure based on the path described. 
+To link a Teams repository to your onedrive account: Go on the folder named 'DATA' (or the one where you store all your datas) and in '...' click on 'Verknüpfung zu OneDrive hinzufügen' ('Add a shortcut to OneDrive').
 
 
 Expected datasets are .mat for intracerebral recordings and .xdf for external recordings. 
@@ -53,7 +55,7 @@ To obtain these formats:
 These instructions will get you a copy of the project up and running on your local machine. 
 
 #### Repository
-* GUI: use a git-manager of preference, and clone: https://github.com/juliettevivien/ReSyn_for_xdf.git
+* GUI: use a git-manager of preference, and clone: https://github.com/juliettevivien/ReSync_for_xdf.git
 * Command line:
     - set working directory to desired folder and run: ```git clone https://github.com/juliettevivien/ReSync_for_xdf.git```
     - to check initiated remote-repo link, and current branch: ```cd ReSync_for_xdf```, ```git init```, ```git remote -v```, ```git branch``` (switch to branch main e.g. with git checkout main)
