@@ -40,7 +40,9 @@ def main_xdf_batch(
 
     """
     main_xdf_batch.py is the main function of ReSync_for_xdf for performing multiple session 
-    synchronization.
+    synchronization. In our case, it needs a specific excel file containing all information 
+    needed for the synchronization of sessions. See example file of recording information 
+    in the ressources folder. 
 
     Parameters
     ----------
@@ -84,7 +86,7 @@ def main_xdf_batch(
         if done == "yes":
             continue
         else:
-            session_ID = row['session ID']
+            session_ID = str(row['session ID'])
             print(f'Synchronizing ' + session_ID + '...')
             DBS_status = row['DBS ON/OFF']
             fname_lfp = row['extracted mat files']
@@ -127,7 +129,15 @@ def main_xdf_batch(
         """
 
         # Set sourcepath and saving path:
-        subject_path = join(onedrivepath, session_ID[:6])
+        # in our case, we have 3 types of group participants: subXXX, CXXX or 
+        # patXXX, and a specific data structure (see the data structure file in 
+        # the ressources folder for an overview)
+        if (session_ID.startswith('s') or session_ID.startswith('p')):
+            subject_path = join(onedrivepath, session_ID[:6])
+        elif session_ID.startswith('C'): 
+            subject_path = join(onedrivepath, session_ID[:4])
+        else: 
+            print('Unrecognized session naming method, please update the code accordingly to your own settings')
         raw_data_path = join(subject_path, "raw_data")
         pre_lfp_source_path = join(raw_data_path, "JSON")
         lfp_source_path = join(pre_lfp_source_path, DBS_status)
@@ -141,8 +151,6 @@ def main_xdf_batch(
         if not os.path.isdir(saving_path):
             os.makedirs(saving_path)
     ############################################################################    
-
-
         #  1. LOADING DATASETS AND EXTRACT CHANNEL CONTAINING ARTIFACTS:
             ##  Intracranial LFP
         lfp_rec = load_mat_file(

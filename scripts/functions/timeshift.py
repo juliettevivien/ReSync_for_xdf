@@ -76,7 +76,7 @@ def check_timeshift(
 
     timeshift_ms = (last_artifact_external_x - last_artifact_lfp_x) * 1000
     
-    dictionary = {"TIMESHIFT": timeshift_ms, "REC DURATION FOR TIMESHIFT": last_artifact_external_x}
+    dictionary = {"LAST_ART_IN_EXT": last_artifact_external_x, "LAST_ART_IN_LFP": last_artifact_lfp_x, "TIMESHIFT": timeshift_ms, "REC DURATION FOR TIMESHIFT": last_artifact_external_x}
     _update_and_save_multiple_params(dictionary, session_ID, saving_path)
 
     if abs(timeshift_ms) > 100:

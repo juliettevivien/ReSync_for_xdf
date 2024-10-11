@@ -16,8 +16,6 @@ from functions.io import (
     write_set
 )
 from functions.plotting import (
-    plot_LFP_external, 
-    ecg, 
     xdf_plot_lfp_external
 )
 from functions.utils import (
@@ -45,7 +43,7 @@ def main_xdf(
 
     """
     main_xdf.py is the main function of ReSync_for_xdf for performing one-by-one session 
-    synchronization. Use main_batch.py for batch synchronization (NOT IMPLEMENTED YET). 
+    synchronization. Use main_xdf_batch.py for batch synchronization. 
 
     Parameters
     ----------
@@ -270,19 +268,6 @@ def main_xdf(
     # 5. PLOT SYNCHRONIZED RECORDINGS:
     xdf_plot_lfp_external(TMSi_rec_offset, lfp_rec_offset, ch_index_external, ch_idx_lfp, sf_LFP, sf_external, saving_path, session_ID)
 
-    """
-    plot_LFP_external(
-        session_ID=session_ID,
-        LFP_synchronized=LFP_synchronized,
-        external_synchronized=external_synchronized,
-        sf_LFP=sf_LFP,
-        sf_external=sf_external,
-        ch_idx_lfp=ch_idx_lfp,
-        ch_index_external=ch_index_external,
-        saving_path=saving_path,
-    )
-
-    """
     #  OPTIONAL : check timeshift:
     if CHECK_FOR_TIMESHIFT:
         print("Starting timeshift analysis...")
